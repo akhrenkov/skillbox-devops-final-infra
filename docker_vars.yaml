@@ -1,3 +1,0 @@
----
-default_container_name: docker
-default_container_image: ubuntu
