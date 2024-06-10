@@ -1,3 +1,18 @@
+variable "vartoken" {
+    type = string
+}
+variable "varcloud_id" {
+    type = string
+}
+variable "varfolder_id" {
+    type = string
+}
+variable "varzone" {
+    type = string
+}
+
+
+
 terraform {
   required_providers {
     yandex = {
@@ -8,10 +23,10 @@ terraform {
 }
 
 provider "yandex" {
-  token     = "y0_AgAAAAAAVKXFAATuwQAAAAD74BsvAADMALj093ZA4ZrvlM40qOAizYDi7g"
-  cloud_id  = "b1g54f7tjq0ps1kj8qm7"
-  folder_id = "b1gf2n6a1s7qnfe7velk"
-  zone      = "ru-central1-a"
+  token     = ${var.vartoken}
+  cloud_id  = ${var.varcloud-id}
+  folder_id = ${var.varfolder-id}
+  zone      = ${var.varzone}
 }
 
 data "yandex_compute_image" "my-ubuntu-2004-1" {
