@@ -1,18 +1,3 @@
-variable "vartoken" {
-    type = string
-}
-variable "varcloud_id" {
-    type = string
-}
-variable "varfolder_id" {
-    type = string
-}
-variable "varzone" {
-    type = string
-}
-
-
-
 terraform {
   required_providers {
     yandex = {
@@ -23,10 +8,10 @@ terraform {
 }
 
 provider "yandex" {
-  token     = ${var.vartoken}
-  cloud_id  = ${var.varcloud-id}
-  folder_id = ${var.varfolder-id}
-  zone      = ${var.varzone}
+  token     = var.vartoken
+  cloud_id  = var.varcloud_id
+  folder_id = var.varfolder_id
+  zone      = var.varzone
 }
 
 data "yandex_compute_image" "my-ubuntu-2004-1" {
@@ -62,60 +47,6 @@ resource "yandex_compute_instance" "my-vm-1" {
 
 
 
-#resource "yandex_compute_instance" "my-vm-2" {
-#  name        = "test-vm-2"
-#  platform_id = "standard-v1"
-#  zone        = "ru-central1-a"
-#
-#  resources {
-#    cores  = 2
-#    memory = 2
-#  }
-#
-#  boot_disk {
-#    initialize_params {
-#      image_id = "${data.yandex_compute_image.my-ubuntu-2004-1.id}"
-#    }
-#  }
-#
-#  network_interface {
-#    subnet_id = yandex_vpc_subnet.my-sn-1.id
-#    nat = true
-#  }
-#
-#  metadata = {
-#    ssh-keys = "ubuntu:${file("~/.ssh/id_ed25519.pub")}"
-#  }
-#}
-
-#resource "yandex_compute_instance" "my-vm-3" {
-#  name        = "test-vm-3"
-#  platform_id = "standard-v1"
-#  zone        = "ru-central1-a"
-#
-#  resources {
-#    cores  = 2
-#    memory = 2
-#  }
-#
-#  boot_disk {
-#    initialize_params {
-#      image_id = "${data.yandex_compute_image.my-ubuntu-2004-1.id}"
-#    }
-#  }
-#
-#  network_interface {
-#    subnet_id = yandex_vpc_subnet.my-sn-1.id
-#    nat = true
-#  }
-#
-#  metadata = {
-#    ssh-keys = "ubuntu:${file("~/.ssh/id_ed25519.pub")}"
-#  }
-#}
-
-
-
 resource "yandex_vpc_network" "default" {
     name = "my-nw-2"
 }
@@ -136,10 +67,6 @@ resource "yandex_lb_target_group" "my-lb-tg-1" {
     address   = "${yandex_compute_instance.my-vm-1.network_interface.0.ip_address}"
   }
 
-#  target {
-#    subnet_id = "${yandex_vpc_subnet.my-sn-1.id}"
-#    address   = "${yandex_compute_instance.my-vm-3.network_interface.0.ip_address}"
-#  }
 }
 
 resource "yandex_lb_network_load_balancer" "my-nw-lb-1" {
@@ -174,22 +101,6 @@ output "external_ip_address_vm_1" {
   value = yandex_compute_instance.my-vm-1.network_interface.0.nat_ip_address
 }
 
-
-#output "internal_ip_address_vm_2" {
-#  value = yandex_compute_instance.my-vm-2.network_interface.0.ip_address
-#}
-
-#output "external_ip_address_vm_2" {
-#  value = yandex_compute_instance.my-vm-2.network_interface.0.nat_ip_address
-#}
-
-#output "internal_ip_address_vm_3" {
-#  value = yandex_compute_instance.my-vm-3.network_interface.0.ip_address
-#}
-
-#output "external_ip_address_vm_3" {
-#  value = yandex_compute_instance.my-vm-3.network_interface.0.nat_ip_address
-#}
 
 output "my_balancer_ip_address" {
   value = yandex_lb_network_load_balancer.my-nw-lb-1.listener
