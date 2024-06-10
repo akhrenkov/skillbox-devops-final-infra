@@ -1,1 +1,0 @@
-# skillbox-devops-final-infra
